@@ -1,0 +1,28 @@
+#lmiddlef{
+    color: #FFB7FF;
+}
+#lmiddlem{
+    color: #000000;
+}
+#hmiddle{
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 35px;
+}
+ input{
+    text-align: center;
+    border-radius: 10px !important;
+ }
+ textarea, select{
+    border-radius: 10px !important;
+ }
+ #row-buttons{
+    padding-top: 1%;
+ }
+ .btn-default{
+    color: #FFB7FF;
+ }
+ .btn-default:hover{
+    color: rgba(194, 11, 124, 0.596);
+ }
+ /* Falta fontes */

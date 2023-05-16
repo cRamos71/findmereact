@@ -1,0 +1,28 @@
+
+
+/*First Container*/
+
+div#first-container,#second-container{ 
+    transition: 2s ease;
+    /*Both Container*/
+    padding: 8%;
+    padding-bottom: 3%;
+    padding-top: 4%;
+}
+div#fc-textone, div#fc-textwo{
+    border-radius: 50px;
+    background-color: #e4cd37;
+    position: sticky;
+    
+}
+div#fc-textone>p, div#fc-textwo>p{
+    padding: 3%;
+    color: black;
+}
+div#fc-textone>h1, div#fc-textwo>h1{
+    text-align: center;
+}
+.col-sm-5>.img-fluid{
+    padding: 1%;
+    border-radius: 20px;
+}

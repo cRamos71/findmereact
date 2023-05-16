@@ -1,0 +1,23 @@
+#footer-items>a{
+    padding:1%;
+    padding-bottom: 0;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    color: #FFB7FF;
+}
+#footer-items>a:hover, li>a:hover{
+    color: rgba(194, 11, 124, 0.596);
+}
+#up{
+    scroll-behavior: smooth;
+}
+footer{
+    position: fixed;
+    left:0;
+    bottom:0;
+    right:0;
+}
+.Footer{
+    padding-bottom:60px;
+}

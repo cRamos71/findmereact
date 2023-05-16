@@ -1,0 +1,38 @@
+#ltitle{
+    color: #FFB7FF;
+}
+li>a{
+    color: #FFB7FF !important;
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+#bigtitle{
+    font-size: 40px;
+    color: black;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+a.nav-link{
+    text-align: right;;
+}
+.navbar-nav > li{
+    padding-left:30px;
+    padding-right:30px;
+}
+.custom-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,183,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
+}.custom-toggler:hover .navbar-toggler-icon:hover {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(194, 11, 124, 0.596)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
+}
+.navbar-toggler{
+    color: #FFFCE8
+}
+#collapseNavbar{
+    transition: height 1.5s ease;
+}
+.Navbar{
+    transition: 2s ease;
+    padding-left: 7%;
+    padding-right: 7%;
+}
