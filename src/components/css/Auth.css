@@ -1,0 +1,40 @@
+#first-container{
+    padding: 8%;
+    padding-top: 4%;
+}
+#main-col{
+    background-color: #e4cd37;
+    border-radius: 50px;
+    padding: 4%;
+}
+#row-login{
+    align-items: center;
+    text-align: center;
+
+}
+#inputuser, #inputpassword{
+    text-align: center;
+    border-radius: 25px;
+    border: 20px;
+}
+#lbl{
+    color: #FFB7FF ;
+    font-family: 'Montserrat', sans-serif;;
+}
+#button{
+border: none;
+border-radius: 10px;
+background-color: #e4cd37;
+color: #FFB7FF;
+}
+#button:hover{
+    color: white;
+}
+#formlogin{
+    display: flex;
+
+}
+#gap{
+    padding-top: 4%;
+    color: white;
+}
