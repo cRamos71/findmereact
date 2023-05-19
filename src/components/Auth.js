@@ -18,6 +18,8 @@ function Auth () {
     function handleRegisterSubmit(event){ // Handles the register button
         event.preventDefault(); // Lets me choose what this form will do when submited, overrides default form behaviour
 
+      // Need to filter password to the requirements
+
         const url = "https://api.secureme.me/api/v1/auth/register";
 
         const sending = {
@@ -41,6 +43,7 @@ function Auth () {
                 if(response.status === 406)
                 setIndicator("That username is already in use!")
               }
+              return response.json(); // Allows me to pass API response to the next .then
             })
             .then(data => {
               console.log(data); // Log the response data
@@ -53,17 +56,40 @@ function Auth () {
 
     function handleLoginSubmit(event){
       event.preventDefault();
-      
-      const [username, setUsername] = useState(""); // I can change this whenever i want, i can add state (value) to the component
-      const [password, setPassword] = useState("");
+
+      const url = "https://api.secureme.me/api/v1/auth/login";
 
       const sending = {
         username: username,
         password: password
       };
-
       // We are here
 
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(sending)
+      })
+        .then(response => {
+          response.json();
+          if(response.status === 201){
+            setIndicator("Sucess!");
+            
+          }else{
+            if(response.status === 406)
+            setIndicator("Wrong Credentials");
+          }
+        })
+        .then(data => {
+          console.log(data); // Log the response data
+          // Perform any additional actions with the response data  
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
     };
 
     return(
@@ -73,7 +99,7 @@ function Auth () {
             <div className="col-sm-auto" id="main-col">
                 <h1>Login into <b><label id="lbl">Find</label>Me</b></h1>
                 <div id="formlogin" className="col-sm-auto justify-content-center">
-                    <form id="formidlogin" className="col-10 col-md-8 col-lg-6" onSubmit={handleSubmit}>
+                    <form id="formidlogin" className="col-10 col-md-8 col-lg-6">
                         <div className="form-group" id='formgroup'>
                             <label for="username"><b></b></label>
                             <div className="input-group " id="user">
