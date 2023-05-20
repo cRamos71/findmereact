@@ -5,10 +5,10 @@ function Footer (){
         <div className='Footer'>
     <footer className="mt-auto text-center text-lg-start bg-dark">
         <div id="footer-items" className="container d-flex justify-content-center py-1 sticky-bottom">
-            <a href="about.html">
+            <a href="/about">
                 About
             </a>
-            <a href="contacts.html">
+            <a href="/contacts">
                 Contacts
             </a>
             <a id="up" href="#top">

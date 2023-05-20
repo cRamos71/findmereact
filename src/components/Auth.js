@@ -7,11 +7,11 @@ function Auth () {
     const [password, setPassword] = useState("");
     const [indicator, setIndicator] = useState("");
 
-    function handleUserNameChange(event){
-        setUsername(event.target.value);
+    function handleUserNameChange(event){ // Auto updates the value when writing 
+        setUsername(event.target.value); 
     }
     
-    function handlePassWordChange(event){
+    function handlePassWordChange(event){ // Auto updates the value when writing 
         setPassword(event.target.value);
     }
 
@@ -38,16 +38,15 @@ function Auth () {
             .then(response => {
               if(response.status === 201){
                 setIndicator("Account created!");
-                
+              }else if(response.status === 406){
+                setIndicator("That username is already in use!");
               }else{
-                if(response.status === 406)
-                setIndicator("That username is already in use!")
+                throw new Error('Registration failed');
               }
               return response.json(); // Allows me to pass API response to the next .then
             })
             .then(data => {
-              console.log(data); // Log the response data
-              // Perform any additional actions with the response data  
+              console.log(data); // Log the response data, check in console if it matches swagger
             })
             .catch(error => {
               console.error('Error:', error);
@@ -63,7 +62,6 @@ function Auth () {
         username: username,
         password: password
       };
-      // We are here
 
       fetch(url, {
         method: 'POST',
@@ -74,18 +72,19 @@ function Auth () {
         body: JSON.stringify(sending)
       })
         .then(response => {
-          response.json();
-          if(response.status === 201){
+          if(response.status === 200){
             setIndicator("Sucess!");
             
-          }else{
-            if(response.status === 406)
+          }else if(response.status === 406){
             setIndicator("Wrong Credentials");
-          }
+            }else{
+              throw new Error('Login failed');
+            }
+
+          return response.json();
         })
         .then(data => {
-          console.log(data); // Log the response data
-          // Perform any additional actions with the response data  
+          console.log(data); // Log the response data, check in console if it matches swagger
         })
         .catch(error => {
           console.error('Error:', error);
