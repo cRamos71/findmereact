@@ -31,7 +31,7 @@ function App() {
           <Route path= "/auth"  element={<Auth onAuthenticationChange={handleAuthenticationChange} />} />
           <Route path= "/about" element={<About />} />
           <Route path= "/contacts" element={<Contacts />} />
-          <Route path= "/dashboard" element={ <PrivateRoute isAuthenticated={isAuthenticated} /* Passing the state */ ><Dashboard /></PrivateRoute>} />
+          <Route path= "/dashboard" element={ <PrivateRoute isAuthenticated={isAuthenticated} /* Parrrssing the state */ ><Dashboard /></PrivateRoute>} />
           <Route path= "/friends" element={<Friends />} />
           <Route path= "/profile" element={<Profile />} />
           <Route path= "/settings" element={<Settings />} />
