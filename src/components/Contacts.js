@@ -71,8 +71,8 @@ function Contacts (){
                             </div>
                         </div>
                         <div id="row-buttons" className="row">
-                        <div className="d-flex col-sm-6 justify-content-center"><button type="submit" className="btn btn-default shadow-none" id="button"><b>Send</b></button></div>
-                        <div className="d-flex col-sm-6 justify-content-center"><button type="reset" className="btn btn-default shadow-none" id="button"><b>Clear</b></button></div>
+                        <div className="d-flex col-sm-6 justify-content-center"><button type="submit" className="btn btn-default shadow-none" id="buttonsend"><b>Send</b></button></div>
+                        <div className="d-flex col-sm-6 justify-content-center"><button type="reset" className="btn btn-default shadow-none" id="buttonreset"><b>Clear</b></button></div>
                         
                         
                     </div>

@@ -10,6 +10,13 @@
     font-size: 35px;
 }
 
+#buttonsend, #buttonreset{
+    color:#FFB7FF;
+}
+#buttonsend:hover, #buttonreset:hover{
+    color: black;
+}
+
 /* Media */
     /* Phones or under */
 @media only screen and (max-width: 600px) {

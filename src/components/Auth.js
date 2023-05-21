@@ -1,18 +1,35 @@
 import './css/Auth.css';
 import React, {useState} from 'react';
 
-function Auth () {
+function Auth ({ onAuthenticationChange }) {
   
     const [username, setUsername] = useState(""); // I can change this whenever i want, i can add state (value) to the component
     const [password, setPassword] = useState("");
     const [indicator, setIndicator] = useState("");
 
     function handleUserNameChange(event){ // Auto updates the value when writing 
-        setUsername(event.target.value); 
+        setUsername(event.target.value.trim());  // .trim() is a js function that removes "white spaces"
     }
     
     function handlePassWordChange(event){ // Auto updates the value when writing 
-        setPassword(event.target.value);
+        setPassword(event.target.value.trim());
+    }
+
+    function passwordfilters(password){
+      if(password.length < 8){
+        setIndicator("Password is too small!");
+        return false
+      }else if(!/\d/.test(password)){
+        setIndicator("Password must contain one digit!");
+        return false
+      }else if(!/[A-Z]/.test(password)){
+        setIndicator("Password must contain at least one uppercase letter!");
+        return false
+      }else if(!/[!@#$%^&*)(+=._-]/.test(password)){
+        setIndicator("Password must contain one symbol!");
+        return false
+      }
+      return true
     }
 
     function handleRegisterSubmit(event){ // Handles the register button
@@ -21,6 +38,10 @@ function Auth () {
       // Need to filter password to the requirements
 
         const url = "https://api.secureme.me/api/v1/auth/register";
+        
+        if(!passwordfilters(password)){
+          return
+        }
 
         const sending = {
             username: username,
@@ -35,7 +56,8 @@ function Auth () {
             },
             body: JSON.stringify(sending)
           })
-            .then(response => {
+            .then(async (response) => {
+              const data = await response.json();
               if(response.status === 201){
                 setIndicator("Account created!");
               }else if(response.status === 406){
@@ -43,10 +65,7 @@ function Auth () {
               }else{
                 throw new Error('Registration failed');
               }
-              return response.json(); // Allows me to pass API response to the next .then
-            })
-            .then(data => {
-              console.log(data); // Log the response data, check in console if it matches swagger
+              console.log(data);
             })
             .catch(error => {
               console.error('Error:', error);
@@ -71,20 +90,20 @@ function Auth () {
         },
         body: JSON.stringify(sending)
       })
-        .then(response => {
+        .then(async (response) => {
+          const data = await response.json();
           if(response.status === 200){
+            sessionStorage.setItem("token", data.token); // I can acess this anywere by using: sessionStorage.getItem("token");
+            onAuthenticationChange(true);
+            // Mudar de página
+            // Na proxima pagina, Navbar vai mudar if
             setIndicator("Sucess!");
-            
-          }else if(response.status === 406){
-            setIndicator("Wrong Credentials");
+          }else if(response.status === 401){
+            setIndicator("Wrong Credentials!");
             }else{
-              throw new Error('Login failed');
+              throw new Error("Login failed!"); 
             }
-
-          return response.json();
-        })
-        .then(data => {
-          console.log(data); // Log the response data, check in console if it matches swagger
+            console.log(data);
         })
         .catch(error => {
           console.error('Error:', error);

@@ -28,7 +28,7 @@ background-color: #e4cd37;
 color: #FFB7FF;
 }
 #button:hover{
-    color: white;
+    color: rgb(0, 0, 0);
 }
 #formlogin{
     display: flex;
