@@ -16,7 +16,10 @@ function Auth ({ onAuthenticationChange }) {
     }
 
     function passwordfilters(password){
-      if(password.length < 8){
+      if(password === '' || username === ''){
+        setIndicator("Empty fields!");
+        return false
+      }else if(password.length < 8){
         setIndicator("Password is too small!");
         return false
       }else if(!/\d/.test(password)){
@@ -95,9 +98,8 @@ function Auth ({ onAuthenticationChange }) {
           if(response.status === 200){
             sessionStorage.setItem("token", data.token); // I can acess this anywere by using: sessionStorage.getItem("token");
             onAuthenticationChange(true);
-            // Mudar de página
-            // Na proxima pagina, Navbar vai mudar if
-            setIndicator("Sucess!");
+            window.location.href = '/dashboard';
+            // setIndicator("Sucess!");
           }else if(response.status === 401){
             setIndicator("Wrong Credentials!");
             }else{
