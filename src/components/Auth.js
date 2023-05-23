@@ -1,7 +1,7 @@
 import './css/Auth.css';
 import React, {useState} from 'react';
 
-function Auth ({ onAuthenticationChange }) {
+function Auth () {
   
     const [username, setUsername] = useState(""); // I can change this whenever i want, i can add state (value) to the component
     const [password, setPassword] = useState("");
@@ -37,8 +37,6 @@ function Auth ({ onAuthenticationChange }) {
 
     function handleRegisterSubmit(event){ // Handles the register button
         event.preventDefault(); // Lets me choose what this form will do when submited, overrides default form behaviour
-
-      // Need to filter password to the requirements
 
         const url = "https://api.secureme.me/api/v1/auth/register";
         
@@ -96,8 +94,8 @@ function Auth ({ onAuthenticationChange }) {
         .then(async (response) => {
           const data = await response.json();
           if(response.status === 200){
-            sessionStorage.setItem("token", data.token); // I can acess this anywere by using: sessionStorage.getItem("token");
-            onAuthenticationChange(true);
+            localStorage.setItem("token", data.token); // I can acess this anywere by using: localStorage.getItem("token");
+            localStorage.setItem("username", data.username);
             window.location.href = '/dashboard';
             // setIndicator("Sucess!");
           }else if(response.status === 401){
@@ -133,10 +131,10 @@ function Auth ({ onAuthenticationChange }) {
                             <label for="gap" id='gap'><b>{indicator}</b></label> {/* Diplayed message */}                             
                             <div id="row-buttons" className="row">
                                 <div className="d-flex col-sm-6 justify-content-center">
-                                  <button type="submit" className="btn btn-default shadow-none" id="button" onClick={handleLoginSubmit}><b>Login</b></button>
+                                  <button type="submit" className="btn btn-default shadow-none" id="button1" onClick={handleLoginSubmit}><b>Login</b></button>
                                 </div>
                                 <div className="d-flex col-sm-6 justify-content-center">
-                                  <button type="submit" className="btn btn-default shadow-none" id="button" onClick={handleRegisterSubmit}><b>Register</b></button></div>
+                                  <button type="submit" className="btn btn-default shadow-none" id="button2" onClick={handleRegisterSubmit}><b>Register</b></button></div>
                             </div>
                     </form>
                 </div>

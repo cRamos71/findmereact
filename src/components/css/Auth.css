@@ -21,7 +21,7 @@
     color: #FFB7FF ;
     font-family: 'Montserrat', sans-serif;;
 }
-#button{
+#button1, #button2{
 border: none;
 border-radius: 10px;
 background-color: #e4cd37;

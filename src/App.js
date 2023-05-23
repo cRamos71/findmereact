@@ -8,31 +8,26 @@ import Dashboard from "./components/Dashboard";
 import NavbarLogged from "./components/NavbarLogged";
 import PrivateRoute from "./components/PrivateRoute";
 import FooterLogged from "./components/FooterLogged";
-import Friends from "./components/Friends";
+import Friends from "./components/Friends"
 import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import Locations from "./components/Locations";
-import { useState } from "react";
 import { Routes, Route } from 'react-router-dom'; // Routes
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleAuthenticationChange = (authenticated) => { // Passed as a prop, callback
-    setIsAuthenticated(authenticated);
-  };
+  const isAuthenticated = localStorage.getItem("token");
 
   return (
       <>
-        {isAuthenticated ? (<NavbarLogged onAuthenticationChange={handleAuthenticationChange} />) : (<Navbar />)}
+        {isAuthenticated ? (<NavbarLogged />) : (<Navbar />)}
         <Routes>  {/* Sending what i want */}
           <Route path= "/" element={<Home />} />
-          <Route path= "/auth"  element={<Auth onAuthenticationChange={handleAuthenticationChange} />} />
+          <Route path= "/auth"  element={<Auth />} />
           <Route path= "/about" element={<About />} />
           <Route path= "/contacts" element={<Contacts />} />
-          <Route path= "/dashboard" element={ <PrivateRoute isAuthenticated={isAuthenticated} /* Parrrssing the state */ ><Dashboard /></PrivateRoute>} />
-          <Route path= "/friends" element={<Friends />} />
+          <Route path= "/dashboard" element={ <PrivateRoute redirectTo="/auth" ><Dashboard /></PrivateRoute>} />
+          <Route path= "/friends" element={ <PrivateRoute redirectTo="/" ><Friends /></PrivateRoute>} />
           <Route path= "/profile" element={<Profile />} />
           <Route path= "/settings" element={<Settings />} />
           <Route path= "/locations" element={<Locations />} />

@@ -12,7 +12,7 @@ function Footer (){
                 Contacts
             </a>
             <a id="up" href="#top">
-                ↑
+                ↑ 
             </a>
         </div>
         <div className="text-center text-white p-1 bg-dark">

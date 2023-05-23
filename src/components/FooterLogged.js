@@ -8,7 +8,7 @@ function FooterLogged(){
             <a href="/dashboard">
                 Dashboard
             </a>
-            <a href="/contacts">
+            <a href="/friends">
                 Friends
             </a>
             <a id="up" href="#top">

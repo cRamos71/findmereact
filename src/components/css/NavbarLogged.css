@@ -1,0 +1,20 @@
+.dropdown-menu{
+    background-color:#FFFCE8 !important;
+    padding-left: 5% !important;
+    
+}
+.dropdown-item{
+    text-align: center !important;
+    font-size: 15px;
+    font-family: 'Montserrat', sans-serif !;
+    padding: 3% !important;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: #FFFCE8 !important;
+}
+#droplbl{
+    font-size: 15px;
+    text-align: center;
+    padding-bottom: 2% !important;
+    padding-top: 2% !important;
+}
