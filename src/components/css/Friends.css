@@ -8,6 +8,12 @@
 #containerSOS{
     text-align: center;
 }
+h1{
+    font-weight: bold !important;
+}
+.inputfname{
+    text-align: center;
+}
 #buttonSOS{
     padding-left: 10%;
     padding-right: 10%;

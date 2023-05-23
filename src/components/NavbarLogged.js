@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 function NavbarLogged (onAuthenticationChange){
 
     function handleLogOut(){
-        localStorage.clear();
+        sessionStorage.clear();
         window.location.href = ("/");
     }
     
@@ -38,15 +38,15 @@ function NavbarLogged (onAuthenticationChange){
                                 <Link  className="nav-link" ><i class="bi bi-bell"></i></Link>
                             </li>
                             <li class="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle"  id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a className="nav-link dropdown-toggle"  id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="/">
                                 <i className="bi bi-person-circle"></i>
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
                                     <div className="row">
-                                        <label id="droplbl"><b>Logged as ➜ {localStorage.getItem("username")}</b></label>
+                                        <label id="droplbl"><b>Logged as ➜ {sessionStorage.getItem("username")}</b></label>
                                     </div>
-                                    <li><a className="dropdown-item" href="#"><b>Action</b></a></li>
-                                    <li><a className="dropdown-item" href="#"><b>Another action</b></a></li>
+                                    <li><a className="dropdown-item" href="/"><b>Action</b></a></li>
+                                    <li><a className="dropdown-item" href="/"><b>Another action</b></a></li>
                                     <li><Link className="dropdown-item" onClick={handleLogOut} ><b>Sign-Out</b></Link></li>
                                 </ul>
                             </li>       

@@ -3,7 +3,7 @@ import React from "react";
 
 
 function PrivateRoute ({ children , redirectTo}){ 
-    const isAuthenticated = localStorage.getItem("token") !== null;
+    const isAuthenticated = sessionStorage.getItem("token") !== null;
     return isAuthenticated ? children : <Navigate  to={redirectTo} />
 }
 

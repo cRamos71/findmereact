@@ -16,7 +16,7 @@ import { Routes, Route } from 'react-router-dom'; // Routes
 
 
 function App() {
-  const isAuthenticated = localStorage.getItem("token");
+  const isAuthenticated = sessionStorage.getItem("token");
 
   return (
       <>

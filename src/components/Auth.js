@@ -94,8 +94,8 @@ function Auth () {
         .then(async (response) => {
           const data = await response.json();
           if(response.status === 200){
-            localStorage.setItem("token", data.token); // I can acess this anywere by using: localStorage.getItem("token");
-            localStorage.setItem("username", data.username);
+            sessionStorage.setItem("token", data.token); // I can acess this anywere by using: sessionStorage.getItem("token");
+            sessionStorage.setItem("username", data.username);
             window.location.href = '/dashboard';
             // setIndicator("Sucess!");
           }else if(response.status === 401){
@@ -103,7 +103,7 @@ function Auth () {
             }else{
               throw new Error("Login failed!"); 
             }
-            console.log(data);
+          console.log(data);
         })
         .catch(error => {
           console.error('Error:', error);
