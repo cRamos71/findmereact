@@ -47,3 +47,59 @@ input::-webkit-inner-spin-button {
 #mapping{
     border-radius: 5%;
 }
+#gap{
+    color: red;
+    padding-top: 0 !important;
+    padding-bottom: 1%;
+}
+#gap2{
+    color: red;
+    padding-top: 2%;
+    padding-bottom: 0%;
+}
+#first-containerdash{
+    transition: 2s ease;
+    padding: 8%;
+    padding-bottom: 2%;
+}
+#btntrash{
+    border: none;
+    background-color: #FFFCE8;
+    color: red;
+    
+}
+#btntrash:hover{
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.377);
+}
+#btnlocs{
+    border: none;
+    background-color: #FFFCE8;
+}
+#btnlocs:hover{
+    color: #FFB7FF;
+}
+#ullocs{
+    list-style-type: none;
+}
+#ullocs>li{
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 8px;
+}
+#ullocs::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+    border-radius: 4px;
+  }
+
+  #ullocs::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the scrollbar track */
+  }
+
+  #ullocs::-webkit-scrollbar-thumb {
+    background: #FFB7FF; /* Color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded corners of the scrollbar thumb */
+  }
+
+  #ullocs::-webkit-scrollbar-thumb:hover {
+    background: #7a487a; /* Color of the scrollbar thumb on hover */
+  }

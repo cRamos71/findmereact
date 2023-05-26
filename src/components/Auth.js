@@ -3,10 +3,12 @@ import React, {useState} from 'react';
 
 function Auth () {
   
+    // On load
     const [username, setUsername] = useState(""); // I can change this whenever i want, i can add state (value) to the component
     const [password, setPassword] = useState("");
     const [indicator, setIndicator] = useState("");
 
+    // On action
     function handleUserNameChange(event){ // Auto updates the value when writing 
         setUsername(event.target.value.trim());  // .trim() is a js function that removes "white spaces"
     }
@@ -94,10 +96,10 @@ function Auth () {
         .then(async (response) => {
           const data = await response.json();
           if(response.status === 200){
+            sessionStorage.setItem("userid", data.userid);
             sessionStorage.setItem("token", data.token); // I can acess this anywere by using: sessionStorage.getItem("token");
             sessionStorage.setItem("username", data.username);
             window.location.href = '/dashboard';
-            // setIndicator("Sucess!");
           }else if(response.status === 401){
             setIndicator("Wrong Credentials!");
             }else{
