@@ -66,7 +66,6 @@ input::-webkit-inner-spin-button {
     border: none;
     background-color: #FFFCE8;
     color: red;
-    
 }
 #btntrash:hover{
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.377);

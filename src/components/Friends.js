@@ -1,12 +1,16 @@
 import './css/Friends.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Friends() {
 
     const [friendadd, setFriendAdd] = useState("");
+    const [update, setUpdate] = useState(0);
+    const [list, setList] = useState([]);
+    const [message, setMessage] = useState("");
+    
 
     var requestOptions = {
-      method: "POST",
+      method: "GET",
       headers: {
         Accept: "application/json",
         Authorization: sessionStorage.getItem("token")
@@ -17,17 +21,45 @@ function Friends() {
       fetch("https://api.secureme.me/api/v1/follower/", requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          const locations = reverseOrder
-            ? data.locations.reverse()
-            : data.locations;
-          setLocs(locations);
+          setList(data.data);
         })
         .catch((error) => console.log("Error fetching data:", error));
-    }, [reverseOrder, update]); // re-runs when reverseOrder / updates  changes
+    }, [update]);
 
 
+    function handleFollowerDelete(id){
+
+      var requestOptions = {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: sessionStorage.getItem("token")
+        },
+        body: JSON.stringify({
+          FollowerUserID: id
+        })
+      };
+
+      fetch("https://api.secureme.me/api/v1/follower", requestOptions)
+      .then(response => response.json())
+      .then(data =>{
+          setUpdate(update+1);
+          setMessage(data.message);
+
+      })
+      .catch(error =>{
+          console.error("Error:", error);
+      }); 
+    }
 
     function handleFriendAdd(){
+      
+      if (friendadd === sessionStorage.getItem("userid")){
+        setMessage("That's your User ID")
+        return;
+      }
+
       
       var requestOptions = {
         method: "POST",
@@ -44,11 +76,14 @@ function Friends() {
 
       fetch("https://api.secureme.me/api/v1/follower/", requestOptions)
         .then((response) =>{
-          console.log(response.status);
+          if(response.ok)
+            setUpdate(update+1);
           return response.json();
         })
         .then((data) =>{
-          console.log(data);
+          setMessage(data.message);
+          if ( friendadd < 0 ) 
+            setMessage("Invalid User ID");
         })
         .catch((error) => console.log("Error fetching data:", error));
 
@@ -60,6 +95,7 @@ function Friends() {
 
     return (
       <>
+      
         <h1 id="hmiddle">
           <b>
             <label id="lmiddlef">Frie</label>
@@ -68,21 +104,49 @@ function Friends() {
         </h1>
         <div className="container-fluid" id="first-container">
           <div className="row">
-            <div className="col-sm-5" id="fc-textone">
+            <div className="col-sm-5" id="fc-text-one">
               <h1>Your Friend List</h1>
-              <ul>
-                <li>PAULA</li>
+              <ul id='ullocs' style={{ maxHeight: "200px", overflowY: "scroll" }}>
+              {list?.map(
+                (
+                  item // ? so maps will only be called if locs aren't either null or undefined
+                ) => (
+                  <li key={item.id}>
+                    <b>UserID</b>: {item.id}
+                    <br />
+                    <b>Username</b>: {item.username}
+                    <br />
+                    <button
+                      id="btntrash"
+                      onClick={() => handleFollowerDelete(item.id)}
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                    <button
+                      id="btnlocs"
+                      onClick={() => console.log(item.id)}
+                    >
+                      <i class="bi bi-geo-alt"></i>
+                    </button>
+                  </li>
+                )
+              )}
               </ul>
+
             </div>
-            <div className='col-sm-2'></div>
-            <div className="col-sm-5 d-flex justify-content-center align-items-center" id='fc-textwo'>
+            
+            <div className='col-sm-1'></div>
+            <div className="col-sm-6 d-flex justify-content-center align-items-center" id='fc-texttwo'>
               <div className="row">
                 <div className="col-sm-12" id='ftable'>
                   <h1>Add Friend</h1>
                 </div>
                 <div className="col-sm-12 d-flex justify-content-center">
-                  <input type="text" id="inputname" placeholder='userid' onChange={handleUsernameChange}/>
+                  <input type="number" id="inputname" placeholder='userid' onChange={handleUsernameChange}/>
                 </div>
+                <label id="gap2" className="d-flex justify-content-center">
+            {message}
+          </label>
                 <div className="col-sm-12 mt-2 text-center" id='fadd'>
                   <button type="submit" className="btn btn-primary" id='btnadd' onClick={handleFriendAdd}>Add</button>
                 </div>

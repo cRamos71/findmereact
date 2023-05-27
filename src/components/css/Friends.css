@@ -2,15 +2,18 @@
     padding-left: 10% !important;
     padding-right: 10% !important;
 }
-#fc-textone>h1 , #ftable>h1{
+#fc-text-one>h1 , #ftable>h1{
     padding-top: 2%;
-    text-align: center;
+    text-align: center;      
+    font-size: 25px;
+    padding-bottom: 2%; 
 }
 #hmiddle, #lmiddlef, #lmiddlem{
     font-size: 35px !important; 
 }
 #containerSOS{
     text-align: center;
+    padding-top: 3%;
 }
 h1{
     font-weight: bold !important;
@@ -33,6 +36,7 @@ h1{
 }
 #fadd{
     padding-bottom: 2%;
+    padding-top: 3%;
 }
 #inputname{
     background-color: #D9D9D9;
@@ -48,4 +52,12 @@ h1{
 }
 #btnadd:hover{
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.274);
+}
+#btnlocs, #btntrash{
+    border: none !important;
+    background-color: #FFFCE8 !important;
+    color: red !important;
+}
+#btntrash:hover, #btnlocs:hover{
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.377);
 }

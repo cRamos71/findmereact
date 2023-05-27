@@ -42,7 +42,7 @@ function Dashboard(){
         setLocs(locations);
       })
       .catch((error) => console.log("Error fetching data:", error));
-  }, [reverseOrder, update]); // re-runs when reverseOrder / updates  changes
+  }, [reverseOrder, update, requestOpt]); // re-runs when reverseOrder / updates  changes
 
 
   //On click
@@ -153,7 +153,7 @@ function Dashboard(){
                 id="btnlocs"
                 onClick={(event) => {
                   toggleReverseOrder();
-                  const rotation = !reverseOrder
+                   !reverseOrder
                     ? (event.target.style.transform = "rotate(180deg)")
                     : (event.target.style.transform = "rotate(0deg)");
                 }}

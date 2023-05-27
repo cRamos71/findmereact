@@ -96,7 +96,7 @@ function Auth () {
         .then(async (response) => {
           const data = await response.json();
           if(response.status === 200){
-            sessionStorage.setItem("userid", data.userid);
+            sessionStorage.setItem("userid", data.uid);
             sessionStorage.setItem("token", data.token); // I can acess this anywere by using: sessionStorage.getItem("token");
             sessionStorage.setItem("username", data.username);
             window.location.href = '/dashboard';
