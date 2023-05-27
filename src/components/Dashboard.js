@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 
 function Dashboard(){
   // On load
+  const [update, setUpdate] = useState(0);
   const [indicator, setIndicator] = useState("");
   const [lat, setLat] = useState(41.1706859839); // UFP lat, using it as default
   const [long, setLong] = useState(-8.60680757276); // UFP long, using it as default
@@ -41,33 +42,36 @@ function Dashboard(){
         setLocs(locations);
       })
       .catch((error) => console.log("Error fetching data:", error));
-  }, [reverseOrder]); // re-runs when reverseOrder changes
+  }, [reverseOrder, update]); // re-runs when reverseOrder / updates  changes
+
 
   //On click
 
-  function handleLocationDelete(itemId) {
-    const requestOptions = {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: sessionStorage.getItem("token"),
-      },
-    };
+  function handleLocationDelete(id){
 
-    fetch(`https://api.secureme.me/api/v1/position/${itemId}`, requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          setLocs((prevLocs) => prevLocs.filter((item) => item.id !== itemId));
-        } else {
-          throw new Error("Error deleting item");
+    var requestOptions = {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          Authorization: sessionStorage.getItem("token")
         }
-      })
-      .catch((error) => console.log("Error deleting item:", error));
+      };
+    fetch(`https://api.secureme.me/api/v1/position/${id}`, requestOptions)
+    .then(response => response.json())
+    .then(data =>{
+        setMessage(data.message)
+        console.log(data.message);
+        setUpdate(update+1);
+    })
+    .catch(error =>{
+        console.error("Error:", error);
+    }); 
   }
 
   const toggleReverseOrder = () => {
-    setReverseOrder((prev) => !prev);
+    setReverseOrder((value) => !value);
+    setUpdate(update+1);
+    setMessage(""); //TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP
   };
 
   function handleLatChange(event) {
@@ -115,11 +119,15 @@ function Dashboard(){
     };
 
     fetch("https://api.secureme.me/api/v1/position/", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setMessage(result.message);
-        console.log(result);
+      .then((response) =>{
+        if(response.ok)
+            setUpdate(update+1);
+        return response.json();
       })
+      .then((data) => {
+        setMessage(data.message);
+        console.log(data);
+      })    
       .catch((error) => console.log("error", error));
   }
 
@@ -164,7 +172,7 @@ function Dashboard(){
                     <br />
                     <button
                       id="btntrash"
-                      onClick={handleLocationDelete(item.ID)}
+                      onClick={() => handleLocationDelete(item.ID)}
                     >
                       <i class="bi bi-trash"></i>
                     </button>
@@ -252,7 +260,6 @@ function Dashboard(){
             </form>
           </div>
           <label id="gap2" className="d-flex justify-content-center">
-            {" "}
             {message}
           </label>
         </div>

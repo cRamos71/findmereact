@@ -8,7 +8,7 @@ import Dashboard from "./components/Dashboard";
 import NavbarLogged from "./components/NavbarLogged";
 import PrivateRoute from "./components/PrivateRoute";
 import FooterLogged from "./components/FooterLogged";
-import Friends from "./components/Friends"
+import Friends from "./components/Friends";
 import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import Locations from "./components/Locations";

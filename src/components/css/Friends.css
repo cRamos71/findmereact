@@ -2,6 +2,10 @@
     padding-left: 10% !important;
     padding-right: 10% !important;
 }
+#fc-textone>h1 , #ftable>h1{
+    padding-top: 2%;
+    text-align: center;
+}
 #hmiddle, #lmiddlef, #lmiddlem{
     font-size: 35px !important; 
 }
@@ -26,4 +30,22 @@ h1{
 }
 #buttonSOS:hover{
     box-shadow: 10px 15px 5px rgba(0, 0, 0, 0.274) !important;
+}
+#fadd{
+    padding-bottom: 2%;
+}
+#inputname{
+    background-color: #D9D9D9;
+    border: 1px solid #0000009c !important;
+    box-shadow: none;
+}
+#btnadd{
+    width: 25%;
+    background-color: #FFB7FF;
+    color: black;
+    font-weight: 700;
+    border: none;
+}
+#btnadd:hover{
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.274);
 }
