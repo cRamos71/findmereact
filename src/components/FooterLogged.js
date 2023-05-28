@@ -5,11 +5,11 @@ function FooterLogged(){
         <div className='Footer'>
     <footer className="mt-auto text-center text-lg-start bg-dark">
         <div id="footer-items" className="container d-flex justify-content-center py-1 sticky-bottom">
-            <a href="/dashboard">
-                Dashboard
+            <a href="/followers">
+                Followers
             </a>
-            <a href="/friends">
-                Friends
+            <a href="/following">
+                Following
             </a>
             <a id="up" href="#top">
                 ↑

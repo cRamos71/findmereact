@@ -32,10 +32,10 @@ function NavbarLogged (onAuthenticationChange){
                                 <Link className="nav-link" to="/dashboard"><b>Dashboard</b></Link>
                             </li>
                             <li className="nav-item">
-                                <Link  className="nav-link" to="/friends"><b>Friends</b></Link>
+                                <Link  className="nav-link" to="/followers"><b>Followers</b></Link>
                             </li>
                             <li className="nav-item">
-                                <Link  className="nav-link" ><i class="bi bi-bell"></i></Link>
+                                <Link  className="nav-link" to="/following"><b>Following</b></Link>
                             </li>
                             <li class="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle"  id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="/">

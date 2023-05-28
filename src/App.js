@@ -8,7 +8,8 @@ import Dashboard from "./components/Dashboard";
 import NavbarLogged from "./components/NavbarLogged";
 import PrivateRoute from "./components/PrivateRoute";
 import FooterLogged from "./components/FooterLogged";
-import Friends from "./components/Friends";
+import Followers from "./components/Followers";
+import Following from "./components/Following";
 import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import Locations from "./components/Locations";
@@ -27,7 +28,8 @@ function App() {
           <Route path= "/about" element={<About />} />
           <Route path= "/contacts" element={<Contacts />} />
           <Route path= "/dashboard" element={ <PrivateRoute redirectTo="/auth" ><Dashboard /></PrivateRoute>} />
-          <Route path= "/friends" element={ <PrivateRoute redirectTo="/" ><Friends /></PrivateRoute>} />
+          <Route path= "/followers" element={ <PrivateRoute redirectTo="/auth" ><Followers /></PrivateRoute>} />
+          <Route path= "/following" element={ <PrivateRoute redirectTo="/auth" ><Following /></PrivateRoute>} />
           <Route path= "/profile" element={<Profile />} />
           <Route path= "/settings" element={<Settings />} />
           <Route path= "/locations" element={<Locations />} />

@@ -1,4 +1,3 @@
-
 #fc-text-one {
     background-color: #FFFCE8 !important;
 }
@@ -69,12 +68,13 @@ input::-webkit-inner-spin-button {
 }
 #btntrash:hover{
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.377);
+    border-radius: 30% !important;
 }
-#btnlocs{
+#btnmylocs{
     border: none;
     background-color: #FFFCE8;
 }
-#btnlocs:hover{
+#btnmylocs:hover{
     color: #FFB7FF;
 }
 #ullocs{

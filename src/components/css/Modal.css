@@ -1,0 +1,21 @@
+.modal-header, .modal-body, .modal-footer{
+    background-color: #FFFCE8 !important;
+}
+li{
+color: #FFB7FF;
+}
+li>b{
+    color: rgba(0, 0, 0, 0.699);
+}
+li>b#lastloci{
+    color: #FFB7FF;
+}
+.btn-secondary{
+    background-color: #FFB7FF !important;
+    color: black !important;
+    font-weight: 700 !important;
+}
+.btn-close{
+    color: rgb(201, 16, 16) !important;
+    font-weight: 700 !important;
+}

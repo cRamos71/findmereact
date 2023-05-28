@@ -42,7 +42,7 @@ function Dashboard(){
         setLocs(locations);
       })
       .catch((error) => console.log("Error fetching data:", error));
-  }, [reverseOrder, update, requestOpt]); // re-runs when reverseOrder / updates  changes
+  }, [reverseOrder, update]); // re-runs when reverseOrder / updates  changes
 
 
   //On click
@@ -150,7 +150,7 @@ function Dashboard(){
             <h2 id="recentlcs">
               My Locations{" "}
               <button
-                id="btnlocs"
+                id="btnmylocs"
                 onClick={(event) => {
                   toggleReverseOrder();
                    !reverseOrder
@@ -168,7 +168,9 @@ function Dashboard(){
                   item // ? so maps will only be called if locs aren't either null or undefined
                 ) => (
                   <li key={item.id}>
-                    Date: {item.CreatedAt.split("T")[0]}
+                    <b>Date:</b> {item.CreatedAt.split("T")[0]}
+                    <br />
+                    <b>Latitude:</b> {item.Latitude}<b>,   Longitude:</b> {item.Longitude}
                     <br />
                     <button
                       id="btntrash"
@@ -176,8 +178,6 @@ function Dashboard(){
                     >
                       <i class="bi bi-trash"></i>
                     </button>
-                    <br />
-                    Latitude: {item.Latitude}, Longitude: {item.Longitude}
                   </li>
                 )
               )}

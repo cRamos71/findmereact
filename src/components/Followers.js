@@ -1,4 +1,4 @@
-import './css/Friends.css';
+import './css/Followers.css';
 import { useState, useEffect } from 'react';
 
 function Friends() {
@@ -7,7 +7,6 @@ function Friends() {
     const [update, setUpdate] = useState(0);
     const [list, setList] = useState([]);
     const [message, setMessage] = useState("");
-    
 
     var requestOptions = {
       method: "GET",
@@ -24,7 +23,8 @@ function Friends() {
           setList(data.data);
         })
         .catch((error) => console.log("Error fetching data:", error));
-    }, [update]);
+    }, [update, requestOptions]);
+
 
 
     function handleFollowerDelete(id){
@@ -32,7 +32,7 @@ function Friends() {
       var requestOptions = {
         method: "DELETE",
         headers: {
-          Accept: "application/json",
+          "accept": "application/json",
           "Content-Type": "application/json",
           Authorization: sessionStorage.getItem("token")
         },
@@ -53,6 +53,8 @@ function Friends() {
       }); 
     }
 
+
+    
     function handleFriendAdd(){
       
       if (friendadd === sessionStorage.getItem("userid")){
@@ -93,19 +95,20 @@ function Friends() {
       setFriendAdd(event.target.value);
     };
 
+
     return (
       <>
       
         <h1 id="hmiddle">
           <b>
-            <label id="lmiddlef">Frie</label>
-            <label id="lmiddlem">nds</label>
+            <label id="lmiddlef">Follo</label>
+            <label id="lmiddlem">wers</label>
           </b>
         </h1>
         <div className="container-fluid" id="first-container">
           <div className="row">
             <div className="col-sm-5" id="fc-text-one">
-              <h1>Your Friend List</h1>
+              <h1>Your Follower List</h1>
               <ul id='ullocs' style={{ maxHeight: "200px", overflowY: "scroll" }}>
               {list?.map(
                 (
@@ -122,12 +125,6 @@ function Friends() {
                     >
                       <i class="bi bi-trash"></i>
                     </button>
-                    <button
-                      id="btnlocs"
-                      onClick={() => console.log(item.id)}
-                    >
-                      <i class="bi bi-geo-alt"></i>
-                    </button>
                   </li>
                 )
               )}
@@ -139,7 +136,7 @@ function Friends() {
             <div className="col-sm-6 d-flex justify-content-center align-items-center" id='fc-texttwo'>
               <div className="row">
                 <div className="col-sm-12" id='ftable'>
-                  <h1>Add Friend</h1>
+                  <h1>Add Follower</h1>
                 </div>
                 <div className="col-sm-12 d-flex justify-content-center">
                   <input type="number" id="inputname" placeholder='userid' onChange={handleUsernameChange}/>
@@ -158,9 +155,9 @@ function Friends() {
           <button type="submit" className="btn btn-default shadow" id="buttonSOS">
             <b>SOS</b>
           </button>
-        </div>
+        </div>  
       </>
     );
   }
 
-export default Friends
+export default Friends;
