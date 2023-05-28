@@ -7,8 +7,27 @@ import { Link } from "react-router-dom";
 function NavbarLogged (onAuthenticationChange){
 
     function handleLogOut(){
-        sessionStorage.clear();
-        window.location.href = ("/");
+
+        var requestOptions = {
+            method: "POST",
+            headers: {
+                "Accept": "aplication/json",
+                Authorization: sessionStorage.getItem("token")
+            },
+            body: JSON.stringify({
+
+            })
+        };
+
+        fetch("https://api.secureme.me/api/v1/auth/logout", requestOptions)
+        .then((response) =>{
+            if(response.ok){
+                sessionStorage.clear();
+                window.location.href = ("/");
+            }else alert("There was an error logging out!");
+        })
+
+    
     }
     
     return(

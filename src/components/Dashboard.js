@@ -191,6 +191,8 @@ function Dashboard(){
                 zoom={13}
                 scrollWheelZoom={false}
                 style={{ width: "100%", height: "400px" }}
+                minZoom={1} // Set the minimum allowed zoom level
+            maxZoom={18} // Set the maximum allowed zoom level
               >
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

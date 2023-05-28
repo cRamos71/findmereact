@@ -9,9 +9,9 @@ div#first-container,#second-container{
     padding-bottom: 3%;
     padding-top: 4%;
 }
-div#fc-textone, div#fc-textwo{
+div#fc-textone{
     border-radius: 50px;
-    background-color: #e4cd37;
+    background-color: #FFFCE8;
     position: sticky;
     
 }
@@ -25,4 +25,11 @@ div#fc-textone>h1, div#fc-textwo>h1{
 .col-sm-5>.img-fluid{
     padding: 1%;
     border-radius: 20px;
+}
+
+#lbltext,#lbltext1{
+    color: #FFB7FF;
+}
+#firstp, #secondp{
+    font-weight: 400;
 }
