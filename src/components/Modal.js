@@ -32,7 +32,6 @@ function ModalLocs({item, name}) {
       .then((response) => response.json())
       .then((data) => {
         setModalItems(data.locations);
-        console.log(modalitems)
       })
       .catch((error) => console.log("Error fetching data:", error));
   }, []); // re-runs when reverseOrder / updates  changes
