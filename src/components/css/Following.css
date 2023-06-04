@@ -17,3 +17,13 @@
     display: flex;
     justify-content: center;
 }
+#lblview{
+    padding-top: 4%;
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: larger;
+}
+#hlocs{
+    color: #600000;
+}

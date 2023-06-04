@@ -1,15 +1,19 @@
 import "./css/Following.css";
 import "leaflet/dist/leaflet.css";
 import Modal from "./Modal";
-import SecondModal from "./SecondModal"
+import SecondModal from "./SecondModal";
 
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import { useState, useEffect } from "react";
 
 function Following() {
   const [following, setFollowing] = useState([]);
   const [followingIds, setFollowingIds] = useState([]); // I'll need this to get the last locs in the modal
+  const [lab, setLabel] = useState("");
+  const [maplocs, setMapLocs] = useState([]);
+  const [lastlocs, setLastLocs] = useState([]);
+  const [sMarker, setSMarker] = useState(false);
 
   var requestOptions = {
     method: "GET",
@@ -24,21 +28,91 @@ function Following() {
       .then((response) => response.json())
       .then((data) => {
         setFollowing(data.data);
-        const ids = following.map((item) => item.id); 
+        const ids = following.map((item) => item.id);
         setFollowingIds(ids); // Im passing this as a prop in the SecondModal element
-        
-      });
+      })
+      .catch((error) => console.log("Error fetching data:", error));
   }, []);
 
   const [markers, setMarkers] = useState({
     // Need to use useState or else it would auto update to the value placed in the input
-    geocode: [41.1706859839, -8.60680757276],
+    geocode: [39, -39],
   });
 
   const customIcon = new Icon({
     iconUrl: "https://cdn-icons-png.flaticon.com/512/3177/3177361.png",
     iconSize: [38, 38],
   });
+
+  function handleMarkerPlacer(uid, user) {
+    setSMarker(false);
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: sessionStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        end: "2023-07-01",
+        start: "2023-01-01",
+        userID: uid,
+      }),
+    };
+
+    fetch(
+      "https://api.secureme.me/api/v1/position/history/user",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setMapLocs(data.locations);
+        setLabel(`Viewing ${user} locations`);
+      })
+      .catch((error) => console.log("Error fetching data:", error));
+  }
+
+  function handleLastMarkerPlacer(uid, user) {
+    setSMarker(false);
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: sessionStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        end: "2023-07-01",
+        start: "2023-01-01",
+        userID: uid,
+      }),
+    };
+
+    fetch(
+      "https://api.secureme.me/api/v1/position/history/user",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (
+          data.locations[0].Latitude > 90 ||
+          data.locations[0].Latitude < -90 ||
+          data.locations[0].Longitude > 180 ||
+          data.locations[0].Longitude < -180
+        ) {
+          setLabel(`${user} last location is not valid!`);
+          setMapLocs([]);
+        } else {
+          console.log(data.locations[0]);
+          setLastLocs(data.locations[0]);
+          setMapLocs([]);
+          setSMarker(true);
+          setLabel(`${user} last location!`);
+        }
+      })
+      .catch((error) => console.log("Error fetching data:", error));
+  }
+
   return (
     <>
       <h1 id="hmiddle">
@@ -59,17 +133,73 @@ function Following() {
             <div id="map-container" style={{ width: "75%", height: "400px" }}>
               <MapContainer
                 id="mapping"
-                center={[41.1706859839, -8.60680757276]}
-                zoom={13}
-                scrollWheelZoom={false}
+                center={markers.geocode}
+                zoom={1}
+                scrollWheelZoom={true}
                 style={{ width: "100%", height: "400px" }}
+                minZoom={1} // Set the minimum allowed zoom level
+                maxZoom={15} 
               >
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                {sMarker && lastlocs && (
+                  <Marker
+                    position={[lastlocs.Latitude, lastlocs.Longitude]}
+                    icon={customIcon}
+                  >
+                    <Popup>
+                      <h5 id="hlocs">
+                        <b>Last Location</b>
+                      </h5>
+                      <label>
+                        <b>Date:</b> {lastlocs.CreatedAt.split("T")[0]}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Hour:</b> {lastlocs.CreatedAt.slice(11, 16)}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Latitude:</b> {lastlocs.Latitude}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Longitude:</b> {lastlocs.Longitude}{" "}
+                      </label>
+                    </Popup>
+                  </Marker>
+                )}
 
-                <Marker position={markers.geocode} icon={customIcon}></Marker>
+                {maplocs?.map((location) => (
+                  <Marker
+                    key={location.ID}
+                    position={[location.Latitude, location.Longitude]}
+                    icon={customIcon}
+                  >
+                    <Popup>
+                      <h5 id="hlocs">
+                        <b>Locations</b>
+                      </h5>
+                      <label>
+                        <b>Date:</b> {location.CreatedAt.split("T")[0]}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Hour:</b> {location.CreatedAt.slice(11, 16)}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Latitude:</b> {location.Latitude}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Longitude:</b> {location.Longitude}{" "}
+                      </label>
+                    </Popup>
+                  </Marker>
+                ))}
               </MapContainer>
             </div>
           </div>
@@ -87,16 +217,28 @@ function Following() {
                     <b>Username</b>: {item.username}
                     <br />
                     <Modal item={item.id} name={item.username} />
-                    <button id="btnmaploc">
-                      <i class="bi bi-geo-alt-fill"></i>
+                    <button
+                      id="btnmaploc"
+                      onClick={() => handleMarkerPlacer(item.id, item.username)}
+                    >
+                      <i class="bi bi-geo-alt-fill">All Locs</i>
+                    </button>
+                    <button
+                      id="btnmaploc"
+                      onClick={() =>
+                        handleLastMarkerPlacer(item.id, item.username)
+                      }
+                    >
+                      <i class="bi bi-geo-alt-fill">Last</i>
                     </button>
                   </li>
                 )
               )}
             </ul>
             <div className="row" id="rowbtnmodal">
-            <SecondModal followingids={followingIds}/>
+              <SecondModal followingids={followingIds} />
             </div>
+            <label id="lblview">{lab}</label>
           </div>
         </div>
       </div>

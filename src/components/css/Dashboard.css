@@ -102,3 +102,25 @@ input::-webkit-inner-spin-button {
   #ullocs::-webkit-scrollbar-thumb:hover {
     background: #7a487a; /* Color of the scrollbar thumb on hover */
   }
+#containerSOS{
+    padding: 0 !important;
+    padding-bottom: 2% !important;
+}
+
+#buttonAutou{
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: #FFB7FF;
+    color: black;
+    font-weight: 700;
+    border-width: 6%;
+}
+#buttonAutou:hover{
+    box-shadow: 10px 15px 5px rgba(0, 0, 0, 0.274) !important;
+}
+#containerAutou{
+    text-align: center;
+    padding-bottom: 3%;
+}

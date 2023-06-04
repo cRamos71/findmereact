@@ -1,7 +1,7 @@
 import './css/Dashboard.css';
 import "leaflet/dist/leaflet.css";
 
-import { MapContainer, Marker, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import { useState, useEffect } from 'react';
 
@@ -9,8 +9,8 @@ function Dashboard(){
   // On load
   const [update, setUpdate] = useState(0);
   const [indicator, setIndicator] = useState("");
-  const [lat, setLat] = useState(41.1706859839); // UFP lat, using it as default
-  const [long, setLong] = useState(-8.60680757276); // UFP long, using it as default
+  const [lat, setLat] = useState(39); // middle
+  const [long, setLong] = useState(-39); // middle
   const [message, setMessage] = useState("");
   const [markers, setMarkers] = useState({
     // Need to use useState or else it would auto update to the value placed in the input
@@ -18,6 +18,10 @@ function Dashboard(){
   });
   const [locs, setLocs] = useState([]);
   const [reverseOrder, setReverseOrder] = useState(false);
+  const [mhour, setMHour] = useState();
+  const [mdate, setMDate] = useState();
+
+
 
   var requestOpt = {
     method: "POST",
@@ -36,16 +40,18 @@ function Dashboard(){
     fetch("https://api.secureme.me/api/v1/position/history", requestOpt)
       .then((response) => response.json())
       .then((data) => {
+        setMarkers({
+          geocode: [data.locations[0].Latitude, data.locations[0].Longitude]
+        })
         const locations = reverseOrder
           ? data.locations.reverse()
           : data.locations;
         setLocs(locations);
+        setMDate(data.locations[0].CreatedAt.split("T")[0]);
+        setMHour(data.locations[0].CreatedAt.slice(11,16));
       })
       .catch((error) => console.log("Error fetching data:", error));
   }, [reverseOrder, update]); // re-runs when reverseOrder / updates  changes
-
-
-  //On click
 
   function handleLocationDelete(id){
 
@@ -68,8 +74,8 @@ function Dashboard(){
     }); 
   }
 
-  const toggleReverseOrder = () => {
-    setReverseOrder((value) => !value);
+  function toggleReverseOrder(){
+    setReverseOrder(!reverseOrder);
     setUpdate(update+1);
     setMessage(""); //TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP
   };
@@ -83,9 +89,9 @@ function Dashboard(){
   }
 
   function cordfilters(lat, long) {
-    if (lat > 90 || lat < -90 || long > 180 || long < -180) {
+    if (lat === -39 || lat > 90 || lat < -90 || long > 180 || long < -180 || long === -39) {
       setIndicator("Invalid Value");
-      setMessage("Wrong Coordinates");
+      setMessage("Invalid Coordinates");
       return false;
     }
     setIndicator("");
@@ -93,48 +99,91 @@ function Dashboard(){
   }
 
   function handleUpdate(event) {
-    event.preventDefault();
 
-    if (!cordfilters(lat, long)) {
-      return;
-    }
+        event.preventDefault();
 
-    setMarkers({
-      geocode: [lat, long],
-    });
+        if (!cordfilters(lat, long)) {
+          return;
+        }
 
-    const sending = {
-      Latitude: parseInt(lat),
-      Longitude: parseInt(long),
-    };
+        setMarkers({
+          geocode: [lat, long],
+        });
 
-    var requestOptions = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify(sending),
-    };
+        const sending = {
+          Latitude: parseInt(lat),
+          Longitude: parseInt(long),
+        };
 
-    fetch("https://api.secureme.me/api/v1/position/", requestOptions)
-      .then((response) =>{
-        if(response.ok)
-            setUpdate(update+1);
-        return response.json();
-      })
-      .then((data) => {
-        setMessage(data.message);
-        console.log(data);
-      })    
-      .catch((error) => console.log("error", error));
-  }
+        var requestOptions = {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: sessionStorage.getItem("token"),
+          },
+          body: JSON.stringify(sending),
+        };
+
+        fetch("https://api.secureme.me/api/v1/position/", requestOptions)
+          .then((response) =>{
+            if(response.ok)
+                setUpdate(update+1);
+            return response.json();
+          })
+          .then((data) => {
+            setMessage(data.message);
+            console.log(data);
+          })    
+          .catch((error) => console.log("error", error));
+  };
 
   const customIcon = new Icon({
     iconUrl: "https://cdn-icons-png.flaticon.com/512/3177/3177361.png",
     iconSize: [38, 38],
   });
+
+  function handleMarkerPlacer(lati, longi, date, hour){
+    setMarkers({
+      geocode: [lati, longi],
+    });
+    setMDate(`${date}`);
+    setMHour(`${hour}`);
+  };
+
+
+  function handleAutoLoc(){
+    
+    navigator.geolocation.getCurrentPosition((position) => {
+      const sending = {
+        Latitude: parseInt(position.coords.latitude),
+        Longitude: parseInt(position.coords.longitude),
+      };
+  
+      var requestOptions = {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify(sending),
+      };
+  
+      fetch("https://api.secureme.me/api/v1/position/", requestOptions)
+        .then((response) =>{
+          if(response.ok)
+              setUpdate(update+1);
+          return response.json();
+        })
+        .then((data) => {
+          setMessage(data.message);
+          console.log(data);
+        })    
+        .catch((error) => console.log("error", error));
+  
+    });
+  };
 
   return (
     <div className="Dashboard">
@@ -178,6 +227,12 @@ function Dashboard(){
                     >
                       <i class="bi bi-trash"></i>
                     </button>
+                    <button
+                      id="btnmaploc"
+                      onClick={() => handleMarkerPlacer(item.Latitude, item.Longitude, item.CreatedAt.split("T")[0], item.CreatedAt.slice(11,16))}
+                    >
+                      <i class="bi bi-geo-alt-fill"></i>
+                    </button>
                   </li>
                 )
               )}
@@ -187,19 +242,40 @@ function Dashboard(){
             <div id="map-container" style={{ width: "75%", height: "400px" }}>
               <MapContainer
                 id="mapping"
-                center={[41.1706859839, -8.60680757276]}
-                zoom={13}
-                scrollWheelZoom={false}
+                center={markers.geocode}
+                zoom={1}
+                scrollWheelZoom={true}
                 style={{ width: "100%", height: "400px" }}
                 minZoom={1} // Set the minimum allowed zoom level
-            maxZoom={18} // Set the maximum allowed zoom level
+                maxZoom={15} 
               >
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                <Marker position={markers.geocode} icon={customIcon}></Marker>
+                <Marker position={markers.geocode} icon={customIcon}>
+                  <Popup>
+                      <h5 id="hlocs">
+                        <b>Location</b>
+                      </h5>
+                      <label>
+                        <b>Date:</b> {mdate}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Hour:</b> {mhour}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Latitude:</b>{markers.geocode[0]}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Longitude:</b>{markers.geocode[1]}{" "}
+                      </label>
+                  </Popup>
+                </Marker>
               </MapContainer>
             </div>
           </div>
@@ -265,6 +341,11 @@ function Dashboard(){
             {message}
           </label>
         </div>
+      </div>
+      <div className="container" id="containerAutou">
+        <button type="submit" className="btn btn-default shadow" id="buttonAutou" onClick={handleAutoLoc}>
+          <b>Auto-Update</b>
+        </button>
       </div>
       <div className="container" id="containerSOS">
         <button type="submit" className="btn btn-default shadow" id="buttonSOS">
