@@ -64,8 +64,7 @@ function NavbarLogged (onAuthenticationChange){
                                     <div className="row">
                                         <label id="droplbl"><b>Logged as ➜ {sessionStorage.getItem("username")}</b></label>
                                     </div>
-                                    <li><a className="dropdown-item" href="/"><b>Action</b></a></li>
-                                    <li><a className="dropdown-item" href="/"><b>Another action</b></a></li>
+                                    <li><Link className="dropdown-item" to="/profile"><b>Profile</b></Link></li>
                                     <li><Link className="dropdown-item" onClick={handleLogOut} ><b>Sign-Out</b></Link></li>
                                 </ul>
                             </li>       

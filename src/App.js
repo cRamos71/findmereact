@@ -11,9 +11,7 @@ import FooterLogged from "./components/FooterLogged";
 import Followers from "./components/Followers";
 import Following from "./components/Following";
 import Profile from "./components/Profile";
-import Settings from "./components/Settings";
-import Locations from "./components/Locations";
-import { Routes, Route } from 'react-router-dom'; // Routes
+import { Routes, Route } from 'react-router-dom';
 
 
 function App() {
@@ -30,9 +28,7 @@ function App() {
           <Route path= "/dashboard" element={ <PrivateRoute redirectTo="/auth" ><Dashboard /></PrivateRoute>} />
           <Route path= "/followers" element={ <PrivateRoute redirectTo="/auth" ><Followers /></PrivateRoute>} />
           <Route path= "/following" element={ <PrivateRoute redirectTo="/auth" ><Following /></PrivateRoute>} />
-          <Route path= "/profile" element={<Profile />} />
-          <Route path= "/settings" element={<Settings />} />
-          <Route path= "/locations" element={<Locations />} />
+          <Route path= "/profile" element={ <PrivateRoute redirectTo="/auth" ><Profile /></PrivateRoute>} />
         </Routes>
         {isAuthenticated ? (<FooterLogged />) : (<Footer />)}
       </>
