@@ -40,15 +40,17 @@ function Dashboard(){
     fetch("https://api.secureme.me/api/v1/position/history", requestOpt)
       .then((response) => response.json())
       .then((data) => {
-        setMarkers({
-          geocode: [data.locations[0].Latitude, data.locations[0].Longitude]
-        })
         const locations = reverseOrder
           ? data.locations.reverse()
           : data.locations;
         setLocs(locations);
-        setMDate(data.locations[0].CreatedAt.split("T")[0]);
-        setMHour(data.locations[0].CreatedAt.slice(11,16));
+        
+        setMarkers({
+          geocode: [data.locations[0].Latitude, data.locations[0].Longitude]
+        })
+        setMDate(data.locations[0].CreatedAt.split("T")[0]); // So my first marker gets a date and not be ""
+        setMHour(data.locations[0].CreatedAt.slice(11,16)); // 
+
       })
       .catch((error) => console.log("Error fetching data:", error));
   }, [reverseOrder, update]); // re-runs when reverseOrder / updates  changes
@@ -63,11 +65,19 @@ function Dashboard(){
         }
       };
     fetch(`https://api.secureme.me/api/v1/position/${id}`, requestOptions)
-    .then(response => response.json())
+    .then(response => {
+      if(response.ok){
+        if(locs.length > 1){
+        setMessage("Position successfully deleted! Showing last position!");
+      } else setMessage("Position successfully deleted!");
+        
+      }
+      return response.json();
+    })
     .then(data =>{
-        setMessage(data.message)
+      setUpdate(update+1);
+        // setMessage(data.message)
         console.log(data.message);
-        setUpdate(update+1);
     })
     .catch(error =>{
         console.error("Error:", error);
@@ -77,7 +87,7 @@ function Dashboard(){
   function toggleReverseOrder(){
     setReverseOrder(!reverseOrder);
     setUpdate(update+1);
-    setMessage(""); //TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP
+    setMessage(""); 
   };
 
   function handleLatChange(event) {
@@ -110,11 +120,6 @@ function Dashboard(){
           geocode: [lat, long],
         });
 
-        const sending = {
-          Latitude: parseInt(lat),
-          Longitude: parseInt(long),
-        };
-
         var requestOptions = {
           method: "POST",
           headers: {
@@ -122,17 +127,21 @@ function Dashboard(){
             "Content-Type": "application/json",
             Authorization: sessionStorage.getItem("token"),
           },
-          body: JSON.stringify(sending),
+          body: JSON.stringify({
+            Latitude: parseInt(lat),
+            Longitude: parseInt(long)
+          }),
         };
 
         fetch("https://api.secureme.me/api/v1/position/", requestOptions)
           .then((response) =>{
             if(response.ok)
+            setMessage("Position updated successfully!");
                 setUpdate(update+1);
             return response.json();
           })
           .then((data) => {
-            setMessage(data.message);
+            // setMessage(data.message);
             console.log(data);
           })    
           .catch((error) => console.log("error", error));
@@ -174,10 +183,10 @@ function Dashboard(){
         .then((response) =>{
           if(response.ok)
               setUpdate(update+1);
+              setMessage("Position updated successfully!");
           return response.json();
         })
         .then((data) => {
-          setMessage(data.message);
           console.log(data);
         })    
         .catch((error) => console.log("error", error));

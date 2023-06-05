@@ -99,6 +99,7 @@ function Auth () {
             sessionStorage.setItem("userid", data.uid);
             sessionStorage.setItem("token", data.token); // I can acess this anywere by using: sessionStorage.getItem("token");
             sessionStorage.setItem("username", data.username);
+            sessionStorage.setItem("password", password);
             window.location.href = '/dashboard';
           }else if(response.status === 401){
             setIndicator("Wrong Credentials!");

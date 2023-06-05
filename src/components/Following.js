@@ -9,11 +9,13 @@ import { useState, useEffect } from "react";
 
 function Following() {
   const [following, setFollowing] = useState([]);
-  const [followingIds, setFollowingIds] = useState([]); // I'll need this to get the last locs in the modal
+  const [followingids, setFollowingIds] = useState([]); // I'll need this to get the last locs in the modal
   const [lab, setLabel] = useState("");
   const [maplocs, setMapLocs] = useState([]);
   const [lastlocs, setLastLocs] = useState([]);
   const [sMarker, setSMarker] = useState(false);
+  const [dateF, setDateF] = useState("2023-01-01");
+  const [dateT, setDateT] = useState("2023-07-01");
 
   var requestOptions = {
     method: "GET",
@@ -28,14 +30,14 @@ function Following() {
       .then((response) => response.json())
       .then((data) => {
         setFollowing(data.data);
-        const ids = following.map((item) => item.id);
+        const ids = data.data.map((item) => item.id);
         setFollowingIds(ids); // Im passing this as a prop in the SecondModal element
       })
       .catch((error) => console.log("Error fetching data:", error));
   }, []);
 
-  const [markers, setMarkers] = useState({
-    // Need to use useState or else it would auto update to the value placed in the input
+  const [markers, setMarkers] = useState({ // just working as a const, keeping it as a state var for possible map center redirect after market placement
+    
     geocode: [39, -39],
   });
 
@@ -45,6 +47,7 @@ function Following() {
   });
 
   function handleMarkerPlacer(uid, user) {
+    // Places all markers for one user
     setSMarker(false);
     const requestOptions = {
       method: "POST",
@@ -67,12 +70,15 @@ function Following() {
       .then((response) => response.json())
       .then((data) => {
         setMapLocs(data.locations);
-        setLabel(`Viewing ${user} locations`);
+        if (data.locations.length == 0) {
+          setLabel(` ${user} has no locations!`);
+        } else setLabel(`Viewing ${user} locations!`);
       })
       .catch((error) => console.log("Error fetching data:", error));
   }
 
   function handleLastMarkerPlacer(uid, user) {
+    // Places last marker for one user
     setSMarker(false);
     const requestOptions = {
       method: "POST",
@@ -103,15 +109,32 @@ function Following() {
           setLabel(`${user} last location is not valid!`);
           setMapLocs([]);
         } else {
-          console.log(data.locations[0]);
           setLastLocs(data.locations[0]);
           setMapLocs([]);
           setSMarker(true);
-          setLabel(`${user} last location!`);
+          setLabel(`Viewing ${user} last location!`);
         }
       })
-      .catch((error) => console.log("Error fetching data:", error));
+      .catch((error) => {
+        if (  
+          error ==
+          "TypeError: Cannot read properties of undefined (reading 'Latitude')" // hotfix, the fetch is sucessful but the Lat and Long that come in the api anwser are undefined since there's no location
+        )
+          
+          setLabel(`${user} has no last location!`);
+        console.log("Error fetching data:", error);
+      });
   }
+
+  function handleNewDateF(event) {
+    setDateF(event.target.value);
+  }
+
+  function handleNewDateT(event) {
+    setDateT(event.target.value);
+  }
+
+  function handleMarkers() {}
 
   return (
     <>
@@ -137,13 +160,14 @@ function Following() {
                 zoom={1}
                 scrollWheelZoom={true}
                 style={{ width: "100%", height: "400px" }}
-                minZoom={1} // Set the minimum allowed zoom level
-                maxZoom={15} 
+                minZoom={1} 
+                maxZoom={15}
               >
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                {/* Single */}
                 {sMarker && lastlocs && (
                   <Marker
                     position={[lastlocs.Latitude, lastlocs.Longitude]}
@@ -171,7 +195,7 @@ function Following() {
                     </Popup>
                   </Marker>
                 )}
-
+                {/* Multiple */}
                 {maplocs?.map((location) => (
                   <Marker
                     key={location.ID}
@@ -180,7 +204,7 @@ function Following() {
                   >
                     <Popup>
                       <h5 id="hlocs">
-                        <b>Locations</b>
+                        <b>Location</b>
                       </h5>
                       <label>
                         <b>Date:</b> {location.CreatedAt.split("T")[0]}{" "}
@@ -201,6 +225,7 @@ function Following() {
                   </Marker>
                 ))}
               </MapContainer>
+              <label id="lblview">{lab}</label>
             </div>
           </div>
           <div className="col-sm-1"></div>
@@ -209,7 +234,7 @@ function Following() {
             <ul id="ullocs" style={{ maxHeight: "200px", overflowY: "scroll" }}>
               {following?.map(
                 (
-                  item // ? so maps will only be called if locs aren't either null or undefined
+                  item // ? so it will cheack if following is not null or undefined before attempting to access its properties.
                 ) => (
                   <li key={item.id}>
                     <b>UserID</b>: {item.id}
@@ -236,9 +261,37 @@ function Following() {
               )}
             </ul>
             <div className="row" id="rowbtnmodal">
-              <SecondModal followingids={followingIds} />
+              <div className="col-sm-6">
+                <label id="lbllocs1">All recent locations</label>
+              </div>
+              <div className="col-sm-2">
+                <SecondModal
+                  followingids={followingids}
+                  dateF={dateF}
+                  dateT={dateT}
+                />
+              </div>
+              <div className="col-sm-2">
+                <button id="btnmaploc" onClick={handleMarkers}>
+                  <i class="bi bi-geo-alt-fill"></i>
+                </button>
+              </div>
             </div>
-            <label id="lblview">{lab}</label>
+            <div className="row" id="rowbtnmodal1">
+              <label id="lbldatef">From:</label>
+              <input
+                type="date"
+                defaultValue="2023-01-01"
+                onChange={handleNewDateF}
+              />
+
+              <label id="lbldatet">To:</label>
+              <input
+                type="date"
+                defaultValue="2023-07-01"
+                onChange={handleNewDateT}
+              />
+            </div>
           </div>
         </div>
       </div>
