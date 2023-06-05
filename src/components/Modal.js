@@ -36,7 +36,7 @@ function ModalLocs({ item, name }) {
   return (
     <>
       <button id="btnmodallocs" onClick={handleShow}>
-        <i class="bi bi-card-heading"></i>
+        <i className="bi bi-card-heading"></i>
       </button>
       <Modal
         show={show}

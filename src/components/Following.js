@@ -329,7 +329,7 @@ function Following() {
                       id="btnmaploc"
                       onClick={() => handleMarkerPlacer(item.id, item.username)}
                     >
-                      <i class="bi bi-geo-alt-fill">All Locs</i>
+                      <i className="bi bi-geo-alt-fill">All Locs</i>
                     </button>
                     <button
                       id="btnmaploc"
@@ -337,7 +337,7 @@ function Following() {
                         handleLastMarkerPlacer(item.id, item.username)
                       }
                     >
-                      <i class="bi bi-geo-alt-fill">Last</i>
+                      <i className="bi bi-geo-alt-fill">Last</i>
                     </button>
                   </li>
                 )
@@ -356,7 +356,7 @@ function Following() {
               </div>
               <div className="col-sm-2">
                 <button id="btnmaploc" onClick={handleMarkers}>
-                  <i class="bi bi-geo-alt-fill"></i>
+                  <i className="bi bi-geo-alt-fill"></i>
                 </button>
               </div>
             </div>

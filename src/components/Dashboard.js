@@ -228,13 +228,13 @@ function Dashboard(){
                       id="btntrash"
                       onClick={() => handleLocationDelete(item.ID)}
                     >
-                      <i class="bi bi-trash"></i>
+                      <i className="bi bi-trash"></i>
                     </button>
                     <button
                       id="btnmaploc"
                       onClick={() => handleMarkerPlacer(item.Latitude, item.Longitude, item.CreatedAt.split("T")[0], item.CreatedAt.slice(11,16))}
                     >
-                      <i class="bi bi-geo-alt-fill"></i>
+                      <i className="bi bi-geo-alt-fill"></i>
                     </button>
                   </li>
                 )
@@ -287,7 +287,7 @@ function Dashboard(){
             <form>
               <div className="row mb-4">
                 <div className="col-sm-4">
-                  <label for="Latitude" className="form-label" id="lbllat">
+                  <label htmlFor="Latitude" className="form-label" id="lbllat">
                     Latitude:
                   </label>
                 </div>
@@ -304,7 +304,7 @@ function Dashboard(){
 
               <div className="row mb-4">
                 <div className="col-sm-4">
-                  <label for="Longitude" className="form-label" id="lbllong">
+                  <label htmlFor="Longitude" className="form-label" id="lbllong">
                     Longitude:
                   </label>
                 </div>
@@ -319,7 +319,7 @@ function Dashboard(){
                 </div>
               </div>
               <label
-                for="gap"
+                htmlFor="gap"
                 id="gap"
                 className="d-flex justify-content-center"
               >

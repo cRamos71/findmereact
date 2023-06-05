@@ -56,7 +56,7 @@ function NavbarLogged (onAuthenticationChange){
                             <li className="nav-item">
                                 <Link  className="nav-link" to="/following"><b>Following</b></Link>
                             </li>
-                            <li class="nav-item dropdown">
+                            <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle"  id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="/">
                                 <i className="bi bi-person-circle"></i>
                                 </a>

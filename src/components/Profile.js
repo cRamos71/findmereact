@@ -22,7 +22,7 @@ function Profile() {
         <div className="container-fluid" id="first-container">
           <div className="row">
             <div className="col-sm-5" id="fc-text-one">
-              <h1 style={{ color: '#FFB7FF' }}><label id='loggggg'>labelLogged as ➜ </label>
+              <h1 style={{ color: '#FFB7FF' }}><label id='loggggg'>Logged as ➜ </label>
                 <label id='useridtop'>{sessionStorage.getItem('username')}</label>
               </h1>
               <h4 id='bio'>Bio:</h4>

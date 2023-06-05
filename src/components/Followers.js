@@ -116,7 +116,7 @@ function Friends() {
                       id="btntrash"
                       onClick={() => handleFollowerDelete(item.id)}
                     >
-                      <i class="bi bi-trash"></i>
+                      <i className="bi bi-trash"></i>
                     </button>
                   </li>
                 )

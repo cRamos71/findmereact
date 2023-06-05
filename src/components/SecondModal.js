@@ -17,26 +17,7 @@ function SecondModal({ followingids, dateF, dateT }) {
   }
 
   useEffect(() => {
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     Authorization: sessionStorage.getItem("token"),
-    //     "Content-Type" : "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     "UserId": followingids,
-    //     "end": dateT,
-    //     "start": dateF
-    //   })
-    // }
-
-    // fetch("https://api.secureme.me/api/v1/position/filter", requestOptions)
-    // .then((response) => response.json())
-    // .then((data) =>{
-    //   console.log(data)
-    // })
-
+    
     const fetchRequests = followingids.map((id) => {
       const requestOptions = {
         method: "POST",
@@ -79,7 +60,7 @@ function SecondModal({ followingids, dateF, dateT }) {
           handleLoad();
         }}
       >
-        <i class="bi bi-card-heading"></i>
+        <i className="bi bi-card-heading"></i>
       </button>
       <Modal
         show={show}
