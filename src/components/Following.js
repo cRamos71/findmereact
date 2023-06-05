@@ -41,7 +41,6 @@ function Following() {
   }, []);
 
   const [markers, setMarkers] = useState({ // just working as a const, keeping it as a state var for possible map center redirect after market placement
-    
     geocode: [39, -39],
   });
 

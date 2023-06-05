@@ -67,6 +67,7 @@ function SecondModal({ followingids, dateF, dateT }) {
       .catch((error) => {
         console.error("Error:", error);
       });
+
   }, [load]);
 
   return (
@@ -113,8 +114,6 @@ function SecondModal({ followingids, dateF, dateT }) {
               </React.Fragment>
             ))}
           </ul>
-
-          {/* Add the content for the second modal here */}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

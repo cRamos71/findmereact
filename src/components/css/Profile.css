@@ -1,0 +1,38 @@
+#puser, #ppass{
+    display: flex;
+    
+}
+#uw, #up, #uwi{
+    font-weight: 700;
+    padding-right: 5px;
+}
+#uu, #uup, #ui{
+    font-weight: 500;
+    color:#FFB7FF;
+}
+#youri{
+    font-weight: 700;
+
+}
+#btnshowpass{
+    background-color: #FFB7FF;
+    color: black;
+    font-weight: 500;
+    border-width: 6%;
+    border-radius: 2%;
+}
+#lblforarea{
+    color: #FFB7FF;
+}
+#loggggg{
+    padding-right: 10px;
+    color: black;
+}
+#useridtop{
+    font-size: x-large;
+}
+
+#bio{
+    font-weight: 500;
+    padding-top: 10px;
+}

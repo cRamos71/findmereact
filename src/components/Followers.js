@@ -22,13 +22,14 @@ function Friends() {
         setList(data.data);
       })
       .catch((error) => console.log("Error fetching data:", error));
-  }, [update, requestOptions]);
+  }, [update]);
 
   function handleFollowerDelete(id) {
-    var requestOptions = {
+
+    const requestOptions = {
       method: "DELETE",
       headers: {
-        accept: "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: sessionStorage.getItem("token"),
       },
@@ -37,10 +38,13 @@ function Friends() {
       }),
     };
 
-    fetch("https://api.secureme.me/api/v1/follower", requestOptions)
-      .then((response) => response.json())
+    fetch("https://api.secureme.me/api/v1/follower/", requestOptions)
+      .then((response) => {
+        if(response.ok)
+         setUpdate(update + 1);
+        return response.json()
+      })
       .then((data) => {
-        setUpdate(update + 1);
         setMessage(data.message);
       })
       .catch((error) => {
@@ -54,7 +58,7 @@ function Friends() {
       return;
     }
 
-    var requestOptions = {
+    const requestOptions = {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -101,7 +105,7 @@ function Friends() {
             <ul id="ullocs" style={{ maxHeight: "200px", overflowY: "scroll" }}>
               {list?.map(
                 (
-                  item // ? so maps will only be called if locs aren't either null or undefined
+                  item // ? so list will only be called if locs aren't either null or undefined
                 ) => (
                   <li key={item.id}>
                     <b>UserID</b>: {item.id}

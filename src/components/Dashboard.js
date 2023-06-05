@@ -48,7 +48,7 @@ function Dashboard(){
         setMarkers({
           geocode: [data.locations[0].Latitude, data.locations[0].Longitude]
         })
-        setMDate(data.locations[0].CreatedAt.split("T")[0]); // So my first marker gets a date and not be ""
+        setMDate(data.locations[0].CreatedAt.split("T")[0]); // So my first marker gets a date and wont be ""
         setMHour(data.locations[0].CreatedAt.slice(11,16)); // 
 
       })
@@ -57,27 +57,24 @@ function Dashboard(){
 
   function handleLocationDelete(id){
 
-    var requestOptions = {
+    const requestOptions = {
         method: "DELETE",
         headers: {
           Accept: "application/json",
           Authorization: sessionStorage.getItem("token")
         }
-      };
+    };
+    
     fetch(`https://api.secureme.me/api/v1/position/${id}`, requestOptions)
     .then(response => {
       if(response.ok){
+        setUpdate(update+1);
         if(locs.length > 1){
-        setMessage("Position successfully deleted! Showing last position!");
+          setMessage("Position successfully deleted! Showing last position!");
       } else setMessage("Position successfully deleted!");
         
       }
       return response.json();
-    })
-    .then(data =>{
-      setUpdate(update+1);
-        // setMessage(data.message)
-        console.log(data.message);
     })
     .catch(error =>{
         console.error("Error:", error);
@@ -86,7 +83,6 @@ function Dashboard(){
 
   function toggleReverseOrder(){
     setReverseOrder(!reverseOrder);
-    setUpdate(update+1);
     setMessage(""); 
   };
 
@@ -99,7 +95,7 @@ function Dashboard(){
   }
 
   function cordfilters(lat, long) {
-    if (lat === -39 || lat > 90 || lat < -90 || long > 180 || long < -180 || long === -39) {
+    if (lat === 39 || lat > 90 || lat < -90 || long > 180 || long < -180 || long === -39) {
       setIndicator("Invalid Value");
       setMessage("Invalid Coordinates");
       return false;
@@ -116,9 +112,7 @@ function Dashboard(){
           return;
         }
 
-        setMarkers({
-          geocode: [lat, long],
-        });
+        
 
         var requestOptions = {
           method: "POST",
@@ -136,6 +130,9 @@ function Dashboard(){
         fetch("https://api.secureme.me/api/v1/position/", requestOptions)
           .then((response) =>{
             if(response.ok)
+            setMarkers({
+              geocode: [lat, long],
+            });
             setMessage("Position updated successfully!");
                 setUpdate(update+1);
             return response.json();
@@ -156,6 +153,7 @@ function Dashboard(){
     setMarkers({
       geocode: [lati, longi],
     });
+
     setMDate(`${date}`);
     setMHour(`${hour}`);
   };
@@ -186,11 +184,7 @@ function Dashboard(){
               setMessage("Position updated successfully!");
           return response.json();
         })
-        .then((data) => {
-          console.log(data);
-        })    
         .catch((error) => console.log("error", error));
-  
     });
   };
 
@@ -225,7 +219,7 @@ function Dashboard(){
                 (
                   item // ? so maps will only be called if locs aren't either null or undefined
                 ) => (
-                  <li key={item.id}>
+                  <li key={item.ID}>
                     <b>Date:</b> {item.CreatedAt.split("T")[0]}
                     <br />
                     <b>Latitude:</b> {item.Latitude}<b>,   Longitude:</b> {item.Longitude}

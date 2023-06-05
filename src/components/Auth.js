@@ -49,26 +49,25 @@ function Auth () {
         const sending = {
             username: username,
             password: password
-          };
+        };
 
           fetch(url, {
             method: 'POST',
             headers: {
-              'Accept': 'application/json',
+              Accept: 'application/json',
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(sending)
           })
             .then(async (response) => {
               const data = await response.json();
-              if(response.status === 201){
+              if(response.ok){
                 setIndicator("Account created!");
               }else if(response.status === 406){
                 setIndicator("That username is already in use!");
               }else{
                 throw new Error('Registration failed');
               }
-              console.log(data);
             })
             .catch(error => {
               console.error('Error:', error);
@@ -88,14 +87,14 @@ function Auth () {
       fetch(url, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(sending)
       })
         .then(async (response) => {
           const data = await response.json();
-          if(response.status === 200){
+          if(response.ok){
             sessionStorage.setItem("userid", data.uid);
             sessionStorage.setItem("token", data.token); // I can acess this anywere by using: sessionStorage.getItem("token");
             sessionStorage.setItem("username", data.username);
