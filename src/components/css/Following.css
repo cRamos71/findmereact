@@ -65,3 +65,28 @@ input[type='date'] {
   #lbldatef, #lbldatet{
     padding-right: 1%;
   }
+
+
+
+
+  @media only screen and (max-width: 600px) {
+    #mapping{
+        margin-left: auto;
+        margin-top: 4%;
+        margin-right: auto;
+        padding-bottom: 4%;
+    }
+    #fc-text-one{
+        margin-top: 35%;
+    }
+}
+
+    /* Tablets or LargePhones */
+@media only screen and (min-width: 600px) {
+    #mapping{
+        margin-left: auto;
+        margin-top: 4%;
+        margin-right: auto;
+        padding-bottom: 4%;
+    }
+}

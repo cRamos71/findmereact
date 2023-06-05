@@ -6,16 +6,20 @@ import SecondModal from "./SecondModal";
 import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import { useState, useEffect } from "react";
+import React, { Fragment } from "react";
 
 function Following() {
-  const [following, setFollowing] = useState([]);
+  const [following, setFollowing] = useState([]); // keeps servers anwser to type on the right
   const [followingids, setFollowingIds] = useState([]); // I'll need this to get the last locs in the modal
-  const [lab, setLabel] = useState("");
-  const [maplocs, setMapLocs] = useState([]);
-  const [lastlocs, setLastLocs] = useState([]);
-  const [sMarker, setSMarker] = useState(false);
-  const [dateF, setDateF] = useState("2023-01-01");
-  const [dateT, setDateT] = useState("2023-07-01");
+  const [lab, setLabel] = useState(""); // Viewing stats
+  const [maplocs, setMapLocs] = useState([]); //  all locs
+  const [lastlocs, setLastLocs] = useState([]); // last loc, need to be an arr for .map 
+  const [sMarker, setSMarker] = useState(false); // works as a flag
+  const [sAllMarker, setAllMarker] = useState(false); // works as a flag
+  const [dateF, setDateF] = useState("2023-01-01"); // date filter
+  const [dateT, setDateT] = useState("2023-07-01"); // date filter
+  const [responses, setResponses] = useState([]);
+
 
   var requestOptions = {
     method: "GET",
@@ -49,6 +53,7 @@ function Following() {
   function handleMarkerPlacer(uid, user) {
     // Places all markers for one user
     setSMarker(false);
+    setAllMarker(false);
     const requestOptions = {
       method: "POST",
       headers: {
@@ -80,6 +85,7 @@ function Following() {
   function handleLastMarkerPlacer(uid, user) {
     // Places last marker for one user
     setSMarker(false);
+    setAllMarker(false);
     const requestOptions = {
       method: "POST",
       headers: {
@@ -134,7 +140,46 @@ function Following() {
     setDateT(event.target.value);
   }
 
-  function handleMarkers() {}
+  function handleMarkers() { // all markers date filtered
+    setSMarker(false);
+    setAllMarker(true);
+    setLabel("Viewing every location based on the defined time-gap!");
+    setMapLocs([]);
+    
+
+    const fetchRequests = followingids.map((id) => {
+
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: sessionStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          end: dateT,
+          start: dateF,
+          userID: id,
+        }),
+      };
+
+      return fetch(
+        "https://api.secureme.me/api/v1/position/history/user",
+        requestOptions
+      )
+        .then((response) => response.json())
+        .catch((error) => console.log("Failed to fetch:", error));
+    });
+
+    Promise.all(fetchRequests)
+      .then((responses) => {
+        setResponses(responses);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+  }
 
   return (
     <>
@@ -167,7 +212,7 @@ function Following() {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {/* Single */}
+                {/* Single for 1 user*/}
                 {sMarker && lastlocs && (
                   <Marker
                     position={[lastlocs.Latitude, lastlocs.Longitude]}
@@ -195,7 +240,7 @@ function Following() {
                     </Popup>
                   </Marker>
                 )}
-                {/* Multiple */}
+                {/* Multiple for 1 user*/}
                 {maplocs?.map((location) => (
                   <Marker
                     key={location.ID}
@@ -224,6 +269,45 @@ function Following() {
                     </Popup>
                   </Marker>
                 ))}
+
+                { sAllMarker && ( responses.map((response) =>(
+                  <React.Fragment key={response.userID}>
+                  {" "}
+                  {/* Works as a component */}
+                  {response.locations?.map((location) => (
+                    <Marker
+                    position={[location.Latitude, location.Longitude]} 
+                    icon={customIcon}
+                    key={location.ID}
+                    >  
+                     <Popup>
+                      <h5 id="hlocs">
+                        <b>Location</b>
+                      </h5>
+                      <label>
+                        <b>UserID:</b> {location.UserId}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Date:</b> {location.CreatedAt.split("T")[0]}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Hour:</b> {location.CreatedAt.slice(11, 16)}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Latitude:</b> {location.Latitude}{" "}
+                      </label>{" "}
+                      <br />
+                      <label>
+                        <b>Longitude:</b> {location.Longitude}{" "}
+                      </label>
+                    </Popup>
+                    </Marker>
+                  ))}
+                </React.Fragment>
+                )))}
               </MapContainer>
               <label id="lblview">{lab}</label>
             </div>
